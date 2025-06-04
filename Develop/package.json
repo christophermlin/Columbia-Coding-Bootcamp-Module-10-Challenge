@@ -1,0 +1,29 @@
+{
+  "name": "develop",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "dev": "ts-node src/index.ts",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "console.table": "^0.10.0",
+    "dotenv": "^16.5.0",
+    "inquirer": "^8.2.4",
+    "pg": "^8.16.0"
+  },
+  "devDependencies": {
+    "@types/inquirer": "^8.2.8",
+    "@types/node": "^20.11.30",
+    "@types/pg": "^8.6.6",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.4.5"
+  }
+}
