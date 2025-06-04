@@ -42,7 +42,7 @@ A command-line application to manage a company's employee database using Node.js
 - All data is stored in PostgreSQL.
 
 ## Video Walkthrough
-- Link: <>
+- Link: <https://drive.google.com/file/d/1F1xYjKSldIyT6rahciOhG46S4dAd3WZN/view>
 
 ## License
 MIT
