@@ -295,8 +295,13 @@ async function deleteDepartment(): Promise<void> {
       choices: depts.rows.map((d: { id: number; name: string }) => ({ name: d.name, value: d.id })),
     },
   ]);
+  // First, delete employees in roles in this department
+  await client.query(`DELETE FROM employee WHERE role_id IN (SELECT id FROM role WHERE department_id = $1)`, [department_id]);
+  // Then, delete roles in this department
+  await client.query('DELETE FROM role WHERE department_id = $1', [department_id]);
+  // Finally, delete the department
   await client.query('DELETE FROM department WHERE id = $1', [department_id]);
-  console.log('Department deleted.');
+  console.log('Department and all associated roles and employees deleted.');
 }
 
 // Delete a role
@@ -310,8 +315,11 @@ async function deleteRole(): Promise<void> {
       choices: roles.rows.map((r: { id: number; title: string }) => ({ name: r.title, value: r.id })),
     },
   ]);
+  // First, delete employees with this role
+  await client.query('DELETE FROM employee WHERE role_id = $1', [role_id]);
+  // Then, delete the role
   await client.query('DELETE FROM role WHERE id = $1', [role_id]);
-  console.log('Role deleted.');
+  console.log('Role and all associated employees deleted.');
 }
 
 // Delete an employee
@@ -325,8 +333,11 @@ async function deleteEmployee(): Promise<void> {
       choices: emps.rows.map((e: { id: number; first_name: string; last_name: string }) => ({ name: `${e.first_name} ${e.last_name}`, value: e.id })),
     },
   ]);
+  // Set manager_id to null for employees managed by this employee
+  await client.query('UPDATE employee SET manager_id = NULL WHERE manager_id = $1', [employee_id]);
+  // Then, delete the employee
   await client.query('DELETE FROM employee WHERE id = $1', [employee_id]);
-  console.log('Employee deleted.');
+  console.log('Employee deleted and subordinates updated.');
 }
 
 // View department utilized budget
